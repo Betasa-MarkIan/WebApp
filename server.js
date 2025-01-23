@@ -4,11 +4,13 @@ const express = require('express')
 const uri = process.env.MONGO_URI;
 const mongoose = require('mongoose')
 const cors = require('cors')
+const app = express()
+const http = require('http')
+const server = http.createServer(app)
 
 require('dotenv').config()
 
 // express app - instance of express app
-const app = express()
 const workoutRoutes = require('./routes/workouts')
 const exerciseRoutes = require('./routes/exercises')
 const workoutPlanRoutes = require('./routes/workoutplans')
@@ -22,9 +24,20 @@ app.use((req, res, next) => {
 })
 
 // routes
-app.use('/api/workouts', workoutRoutes)
-app.use('/api/exercises', exerciseRoutes)
-app.use('/api/workoutplans', workoutPlanRoutes)
+// app.use('/api/workouts', workoutRoutes)
+// app.use('/api/exercises', exerciseRoutes)
+// app.use('/api/workoutplans', workoutPlanRoutes)
+
+//for testing
+app.get('/', (req, res)=> {
+  res.send("server is running")
+})
+
+const PORT = process.env.PORT || 4000
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http:localhost:${PORT}`)
+})
 
 
 // Connect to db - async 
@@ -40,15 +53,15 @@ app.use('/api/workoutplans', workoutPlanRoutes)
 //     console.log(error)
 //   })
 
-  mongoose.
-    connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
-    .then(() => console.log("MongoDB connected...listening on port 4000"))
-    .catch((error) => {
-      console.error("MongoDB Connection error:", error.message)
-      process.exit(1)
-    })
+  // mongoose.
+  //   connect(process.env.MONGO_URI, {
+  //     useNewUrlParser: true,
+  //     useUnifiedTopology: true,
+  //   })
+  //   .then(() => console.log("MongoDB connected...listening on port 4000"))
+  //   .catch((error) => {
+  //     console.error("MongoDB Connection error:", error.message)
+  //     process.exit(1)
+  //   })
 
   
